@@ -10,6 +10,8 @@ export type Swr = {
   revalidateOnFocus?: boolean;
   swrPath?: string;
   revalidate_f?: number;
+  times?: { offset: number; latency: number };
+  time?: number;
 };
 
 export type Props = any & {
