@@ -1,7 +1,7 @@
 {
   "name": "next-swr",
   "description": "Revalidate stale data in Next.js",
-  "version": "0.1.1",
+  "version": "0.1.2-canary.0",
   "license": "MIT",
   "author": "aprendendofelipe",
   "repository": "aprendendofelipe/next-swr",
