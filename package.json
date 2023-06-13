@@ -1,7 +1,7 @@
 {
   "name": "next-swr",
   "description": "Revalidate stale data in Next.js",
-  "version": "0.1.2-canary.0",
+  "version": "0.1.2-canary.1",
   "license": "MIT",
   "author": "aprendendofelipe",
   "repository": "aprendendofelipe/next-swr",
@@ -14,18 +14,24 @@
     "swr"
   ],
   "main": "dist/index.js",
-  "module": "dist/next-swr.esm.js",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
+    },
+    "./middlewareClock": {
+      "import": "./dist/middlewareClock.js",
+      "require": "./dist/middlewareClock.js"
+    }
+  },
   "typings": "dist/index.d.ts",
-  "files": [
-    "dist",
-    "src"
-  ],
+  "files": ["dist"],
   "engines": {
-    "node": ">=12"
+    "node": ">=16"
   },
   "scripts": {
     "analyze": "size-limit --why",
-    "build": "dts build",
+    "build": "dts build --entry ./src/index.ts --entry ./src/middlewareClock.ts --format cjs",
     "commit": "cz",
     "lint": "dts lint",
     "lint:fix": "dts lint --fix",
@@ -42,8 +48,9 @@
     ]
   },
   "peerDependencies": {
-    "next": ">=12",
-    "react": ">=16"
+    "next": ">=13",
+    "react": ">=18",
+    "react-dom": ">=18"
   },
   "husky": {
     "hooks": {
@@ -78,10 +85,6 @@
     "dts-cli": "2.0.0",
     "husky": "8.0.3",
     "lint-staged": "13.2.1",
-    "next": "13.2.4",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "size-limit": "8.2.4",
     "tslib": "2.5.0",
     "typescript": "5.0.4"
   }

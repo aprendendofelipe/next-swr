@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
-import { NextRequest } from './types';
+import type { NextRequest } from 'next/server';
 
-export function middlewareClock(middleware: (request: NextRequest) => Promise<NextResponse>) {
+export default function middlewareClock(middleware: (request: NextRequest) => Promise<NextResponse>) {
   return async (request: NextRequest) => {
     const { pathname } = request.nextUrl;
 
