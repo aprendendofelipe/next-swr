@@ -1,5 +1,4 @@
 import { GetStaticPropsResult } from 'next/types';
-export type { NextRequest } from 'next/server';
 
 export type Swr = {
   expires?: number;
