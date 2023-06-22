@@ -1,7 +1,7 @@
 {
   "name": "next-swr",
   "description": "Revalidate stale data in Next.js",
-  "version": "0.1.2-canary.2",
+  "version": "0.2.0-canary.0",
   "license": "MIT",
   "author": "aprendendofelipe",
   "repository": "aprendendofelipe/next-swr",
@@ -19,31 +19,32 @@
       "import": "./dist/index.js",
       "require": "./dist/index.js"
     },
-    "./middlewareClock": {
-      "import": "./dist/middlewareClock.js",
-      "require": "./dist/middlewareClock.js"
+    "./middleware": {
+      "import": "./dist/middleware/index.js",
+      "require": "./dist/middleware/index.js"
     }
   },
   "typings": "dist/index.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "engines": {
     "node": ">=16"
   },
   "scripts": {
-    "analyze": "size-limit --why",
-    "build": "dts build --entry ./src/index.ts --entry ./src/middlewareClock.ts --format cjs",
+    "build": "dts build --entry ./src/index.ts --entry ./src/middleware/index.ts --format cjs",
     "commit": "cz",
-    "lint": "dts lint",
-    "lint:fix": "dts lint --fix",
+    "lint": "npm run lint:prettier",
+    "lint:fix": "eslint --fix && prettier --write .",
     "lint:prettier": "prettier --check .",
     "pre-commit": "lint-staged",
-    "prepare": "npm run build",
+    "prepare": "husky install && npm run build",
     "size": "size-limit",
     "start": "dts watch",
     "test": "dts test --passWithNoTests"
   },
   "lint-staged": {
-    "*.ts": [
+    "*.{js,jsx,ts,tsx,json,md}": [
       "npm run lint:fix"
     ]
   },
@@ -52,11 +53,6 @@
     "react": ">=18",
     "react-dom": ">=18"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "dts lint"
-    }
-  },
   "prettier": {
     "endOfLine": "auto",
     "printWidth": 120,
@@ -64,28 +60,29 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
-  "size-limit": [
-    {
-      "path": "dist/next-swr.cjs.production.min.js",
-      "limit": "10 KB"
-    },
-    {
-      "path": "dist/next-swr.esm.js",
-      "limit": "10 KB"
-    }
-  ],
   "devDependencies": {
     "@commitlint/cli": "17.6.1",
     "@commitlint/config-conventional": "17.6.1",
-    "@size-limit/preset-small-lib": "8.2.4",
     "@tsconfig/recommended": "1.0.2",
     "@tsconfig/vite-react": "1.0.1",
     "@types/react": "18.0.35",
     "@types/react-dom": "18.0.11",
+    "@typescript-eslint/eslint-plugin": "5.60.0",
+    "@typescript-eslint/parser": "5.60.0",
     "dts-cli": "2.0.0",
+    "eslint": "8.43.0",
+    "eslint-config-standard-with-typescript": "35.0.0",
+    "eslint-plugin-import": "2.27.5",
+    "eslint-plugin-n": "15.7.0",
+    "eslint-plugin-promise": "6.1.1",
+    "eslint-plugin-react": "7.32.2",
     "husky": "8.0.3",
     "lint-staged": "13.2.1",
+    "next": "13.4.6",
+    "prettier": "2.8.8",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
     "tslib": "2.5.0",
-    "typescript": "5.0.4"
+    "typescript": "5.1.3"
   }
 }

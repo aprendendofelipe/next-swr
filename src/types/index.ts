@@ -1,25 +1,24 @@
 import { GetStaticPropsResult } from 'next/types';
 
 export type Swr = {
-  expires?: number;
   dedupingInterval?: number;
-  refreshInterval?: number | ((props: any) => number);
+  expires?: number;
+  refreshInterval?: number | ((props: Props) => number);
   revalidateIfStale?: boolean;
-  revalidateOnMount?: boolean;
   revalidateOnFocus?: boolean;
-  swrPath?: string;
+  revalidateOnMount?: boolean;
   revalidate_f?: number;
-  times?: { offset: number; latency: number };
+  swrPath?: string;
   time?: number;
+  times?: { offset: number; latency: number };
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type Props = any & {
   swr?: Swr;
 };
 
 export type GetStaticPropsSwr = GetStaticPropsResult<Props> & {
-  props: Props;
-  swr: Swr;
+  props?: Props;
+  swr?: Swr;
 };
-
-export type Timer = ReturnType<typeof setTimeout> | ReturnType<typeof setInterval>;

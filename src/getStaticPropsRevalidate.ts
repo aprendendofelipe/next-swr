@@ -7,7 +7,7 @@ export function getStaticPropsRevalidate(getStaticProps: (ctx: GetStaticPropsCon
     const { props, revalidate: _revalidate, swr, ...rest } = await getStaticProps(ctx);
     const { revalidate_f, ...swrRest } = swr || {};
     const expires =
-      typeof _revalidate === 'number' && _revalidate !== 0 ? (_revalidate * 1000 + Date.now()) * 2 - startTime : null;
+      typeof _revalidate === 'number' && _revalidate !== 0 ? (_revalidate * 1000 + Date.now()) * 2 - startTime : 0;
     const dedupingInterval = Date.now() - startTime;
 
     const revalidate = revalidate_f

@@ -1,24 +1,24 @@
 import { useContext, useEffect, useState } from 'react';
 import { RevalidateContext } from './Provider';
-import { Props, Swr } from './types';
 
-export function useRevalidate(_props: Props, swrConfig: Swr) {
-  const { swr } = _props || {};
-  const [stateTime, setTime] = useState(Date.now());
-  const [state, setNewState] = useState(_props);
-  const swrCtx = useContext(RevalidateContext);
-  const config = { ...swrCtx, ...swr, ...swrConfig } as Swr;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type useRevalidateProps = any;
+
+export function useRevalidate(props: useRevalidateProps) {
+  const [state, setNewState] = useState(props);
+  const { time = 0, times } = useContext(RevalidateContext);
+  const [stateTime, setTime] = useState(time);
 
   useEffect(() => {
-    if (config.time && config.time > stateTime) {
-      setNewState(_props);
-      setTime(config.time);
+    if (time > stateTime || !time) {
+      setNewState(props);
+      setTime(time);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [_props]);
+  }, [props]);
 
-  function setState(newState: any) {
-    setTime(Date.now() - (config.times?.offset || 0));
+  function setState(newState: useRevalidateProps) {
+    setTime(Date.now() - (times?.offset || 0));
     setNewState(newState);
   }
 

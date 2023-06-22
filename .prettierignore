@@ -1,9 +1,4 @@
-*.log
-.DS_Store
-node_modules
-.cache
 dist
-.vscode
 
 # testing
 tests/utils/server/.next/
