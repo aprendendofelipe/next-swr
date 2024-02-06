@@ -1,26 +1,30 @@
 import { GetStaticPropsResult } from 'next/types';
-export type { NextRequest } from 'next/server';
 
 export type Swr = {
-  expires?: number;
   dedupingInterval?: number;
-  refreshInterval?: number | ((props: any) => number);
+  expires?: number;
+  refreshInterval?: number | ((props: Props) => number);
   revalidateIfStale?: boolean;
-  revalidateOnMount?: boolean;
   revalidateOnFocus?: boolean;
-  swrPath?: string;
+  revalidateOnMount?: boolean;
   revalidate_f?: number;
-  times?: { offset: number; latency: number };
+  swrPath?: string;
   time?: number;
+  times?: { offset: number; latency?: number; firstLoad?: boolean };
 };
 
-export type Props = any & {
+export type Props = { [key: string]: unknown } & { swr?: Swr };
+
+export type GetStaticPropsSwr = GetStaticPropsResult<Props> & {
+  props?: Props;
   swr?: Swr;
 };
 
-export type GetStaticPropsSwr = GetStaticPropsResult<Props> & {
-  props: Props;
-  swr: Swr;
-};
+export type UseRevalidateResult = [Props, (newState: Props | ((props: Props) => Props)) => void];
 
-export type Timer = ReturnType<typeof setTimeout> | ReturnType<typeof setInterval>;
+export type UseTimesResult = {
+  time?: number;
+  offset?: number;
+  latency?: number;
+  firstLoad?: boolean;
+};

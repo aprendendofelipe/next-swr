@@ -1,6 +1,10 @@
-*.log
-.DS_Store
 node_modules
-.cache
 dist
 .vscode
+
+# testing
+coverage
+tests/e2e/results
+
+# example
+example/.next/

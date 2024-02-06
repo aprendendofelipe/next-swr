@@ -9,37 +9,41 @@ Only one api call per session is needed to synchronize local and remote clocks. 
 ## Install
 
 ```
-  npm install next-swr
+  npm i next-swr
 ```
 
 ## Usage
 
 ```js
 // _app file
-import { useRevalidate } from 'next-swr'
+import { RevalidateProvider } from 'next-swr';
 
 function App({ Component, pageProps }) {
-  useRevalidate(pageProps) // Optional
-  return <Component {...pageProps} />
+  const swrConfig = pageProps.swr;
+
+  return (
+    <RevalidateProvider swr={swrConfig}>
+      <Component {...pageProps} />
+    </RevalidateProvider>
+  );
 }
 ```
 
 ```js
 // middleware
-import { middlewareClock } from 'next-swr'
+import clock from 'next-swr/clock';
 
-export const config = { matcher: ['/swr'] }
+export const config = { matcher: ['/swr', '/others-paths'] };
 
-export const middleware = middlewareClock(async () = > { ... });
+export const middleware = clock(optionalMiddlewareFunction);
 ```
 
 ```js
 // page files
-import { getStaticPropsRevalidate, useRevalidate } from 'next-swr'
+import { getStaticPropsRevalidate } from 'next-swr'
 
-function Page({ swr, ...props }) {
-  useRevalidate({ swr }) // Only if not in _app file
-  return <Component {...props} />
+function Page({ data }) {
+  return <Component {...data} />
 }
 
 export const getStaticProps = getStaticPropsRevalidate(async (ctx) => {
@@ -51,22 +55,34 @@ export const getStaticProps = getStaticPropsRevalidate(async (ctx) => {
 )
 ```
 
-It is better to put `useRevalidate` only in the \_app file as it reduces the number of renders and calls to the backend.
+```js
+// Optimistic component files
+import { useRevalidate } from 'next-swr';
 
-In this case, custom settings for each page can be returned via the swr object in getStaticProps.
+function Component(props) {
+  const [state, setState] = useRevalidate(props.state);
+
+  return (
+    <div>
+      <h1>{state}</h1>
+      <button
+        onClick={async () => {
+          const newState = await getOrUpdateState();
+          setState(newState);
+        }}
+      >
+        Use most current state
+      </button>
+    </div>
+  );
+}
+```
 
 ## Parameters
 
-- `swr`: an object of options for this hook
+- `swr`: an object of options for next-swr
 
-### Examples
-
-```js
-function Page({ swr, ...props }) {
-  useRevalidate({ swr: {...swr, revalidateOnFocus: false } })
-```
-
-or
+### Custom config per page
 
 ```js
 export const getStaticProps = getStaticPropsRevalidate(async () => {
@@ -75,28 +91,25 @@ export const getStaticProps = getStaticPropsRevalidate(async () => {
     props: { data },
     swr: {
       revalidate_f: 1,
-      refreshInterval: 30_000
-    }
-  }
-})
+      refreshInterval: 30_000,
+      revalidateOnFocus: false,
+    },
+  };
+});
 ```
 
 ## Options
 
-- `revalidateIfStale = true`: automatically revalidate even if there is stale data
-- `revalidateOnMount = true`: enable or disable first automatic revalidation when component is mounted
+- `revalidateIfStale = true`: revalidate only if there is stale data
+- `revalidateOnMount = true`: enable or disable first automatic revalidation when page is mounted
 - `revalidateOnFocus = true`: automatically revalidate when window gets focused
 - `refreshInterval`:
   - Disabled by default: `refreshInterval = 0`
-  - If set to a number, polling interval in milliseconds (min 50 ms)
-  - If set to a function, the function will receive the latest data and should return the interval in milliseconds
+  - If set to a number, polling interval in milliseconds.
+  - If set to a function, the function will receive the latest props and should return the interval in milliseconds.
 - `dedupingInterval`: dedupe revalidate at least this time interval in milliseconds. Default is the elapsed time in the previous revalidation
 - `revalidate_f`: sets a fixed revalidate on `getStaticProps`. The default is automatic, being `revalidate` plus the elapsed time in the previous revalidation
-- `swrPath`: sets the endpoint to return the server time to synchronize expiration. Default is `/swr` which can be provided by `middlewareClock`
-
-## Incompatibility
-
-Not compatible with Next.js v13.3.0 due to a [bug.](https://github.com/vercel/next.js/issues/48302)
+- `swrPath`: sets the endpoint to return the server time to synchronize expiration. Default is `/swr` which can be provided by `next-swr/clock`
 
 ## License
 

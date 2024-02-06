@@ -1,0 +1,59 @@
+{
+  "root": true,
+  "env": {
+    "browser": true,
+    "es6": true,
+    "jest": true,
+    "node": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:react/jsx-runtime",
+    "plugin:testing-library/react",
+    "next",
+    "prettier"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": { "jsx": true },
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "settings": {
+    "next": { "rootDir": "example" },
+    "react": { "version": "detect" }
+  },
+  "plugins": ["@typescript-eslint", "react"],
+  "rules": {
+    "semi": ["error", "always"],
+    "react/jsx-uses-react": "error",
+    "react/prop-types": 0,
+    "import/newline-after-import": "error",
+    "import/no-duplicates": "error",
+    "import/no-useless-path-segments": ["error", { "noUselessIndex": true }],
+    "import/order": [
+      "error",
+      {
+        "alphabetize": { "order": "asc", "caseInsensitive": true },
+        "groups": [["builtin", "external"], "internal", ["parent", "sibling", "index"]],
+        "newlines-between": "always",
+        "pathGroups": [
+          { "pattern": "next-swr/**", "group": "external" },
+          { "pattern": "next-swr", "group": "external" }
+        ]
+      }
+    ],
+    "sort-imports": [
+      "error",
+      {
+        "allowSeparatedGroups": true,
+        "ignoreCase": true,
+        "ignoreDeclarationSort": true
+      }
+    ]
+  },
+  "ignorePatterns": ["dist", "node_modules", ".next"]
+}

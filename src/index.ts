@@ -1,6 +1,4 @@
-export { getStaticPropsRevalidate } from './getStaticPropsRevalidate';
-export { middlewareClock } from './middlewareClock';
-export { RevalidateProvider } from './Provider';
-export { useRevalidate } from './useRevalidate';
-
-export * from './types';
+export { default as RevalidateProvider } from 'src/Provider';
+export { default as getStaticPropsRevalidate } from 'src/getStaticProps';
+export { default as useRevalidate } from 'src/hooks/useRevalidate';
+export { default as useTimes } from 'src/hooks/useTimes';
